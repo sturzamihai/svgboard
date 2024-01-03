@@ -1,5 +1,5 @@
 import Tool from "./tool.js";
-import CreateShapeEvent from "../events/create-shape.js";
+import CreateElementEvent from "../events/create-element.js";
 
 export default class DrawRectangleTool extends Tool {
   constructor(svgBoard) {
@@ -24,8 +24,14 @@ export default class DrawRectangleTool extends Tool {
     this.previewRectangle.setAttribute("y", this.startY);
     this.previewRectangle.setAttribute("width", 0);
     this.previewRectangle.setAttribute("height", 0);
-    this.previewRectangle.setAttribute("fill", "transparent");
-    this.previewRectangle.setAttribute("stroke", "red");
+    this.previewRectangle.setAttribute(
+      "fill",
+      this.svgBoard.customizer.background.color
+    );
+    this.previewRectangle.setAttribute(
+      "stroke",
+      this.svgBoard.customizer.stroke.color
+    );
 
     this.svgBoard.container.appendChild(this.previewRectangle);
   }
@@ -72,10 +78,19 @@ export default class DrawRectangleTool extends Tool {
     this.rectangle.setAttribute("y", y);
     this.rectangle.setAttribute("width", width);
     this.rectangle.setAttribute("height", height);
-    this.rectangle.setAttribute("fill", "red");
-    this.rectangle.setAttribute("stroke", "transparent");
+    this.rectangle.setAttribute(
+      "fill",
+      this.svgBoard.customizer.background.color
+    );
+    this.rectangle.setAttribute(
+      "stroke",
+      this.svgBoard.customizer.stroke.color
+    );
 
-    const createRectangle = new CreateShapeEvent(this.svgBoard, this.rectangle);
+    const createRectangle = new CreateElementEvent(
+      this.svgBoard,
+      this.rectangle
+    );
     this.svgBoard.history.do(createRectangle);
 
     this.svgBoard.container.removeChild(this.previewRectangle);

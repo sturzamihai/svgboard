@@ -1,6 +1,6 @@
 import Event from "./event.js";
 
-export default class DeleteShapeEvent extends Event {
+export default class DeleteElementEvent extends Event {
     constructor(svgBoard, shape) {
         super();
         this.svgBoard = svgBoard;

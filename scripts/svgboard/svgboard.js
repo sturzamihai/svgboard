@@ -1,3 +1,4 @@
+import Customizer from "./customizer/panel.js";
 import EventHistory from "./events/event-history.js";
 
 export default class SVGBoard {
@@ -8,6 +9,7 @@ export default class SVGBoard {
     this.selectedElements = [];
     this.tools = [];
     this.activeTool = null;
+    this.customizer = new Customizer(this);
 
     this.initHistory();
     this.addTools(tools);
@@ -89,9 +91,14 @@ export default class SVGBoard {
     document.body.appendChild(container);
   }
 
+  dispatchEvent(event) {
+    this.history.do(event);
+  }
+
   addSelectedElement(element) {
     this.selectedElements.push(element);
     element.classList.add("selected");
+    this.customizer.showPanel();
   }
 
   removeSelectedElement(element) {
@@ -99,6 +106,10 @@ export default class SVGBoard {
       (el) => el !== element
     );
     element.classList.remove("selected");
+
+    if (this.selectedElements.length === 0) {
+      this.customizer.hidePanel();
+    }
   }
 
   clearSelectedElements() {
@@ -106,9 +117,8 @@ export default class SVGBoard {
       element.classList.remove("selected");
     });
     this.selectedElements = [];
+    this.customizer.hidePanel();
   }
-
-  
 
   loadState() {
     const serializedContainer = localStorage.getItem("svgboard");
