@@ -1,22 +1,5 @@
-import Event from "../events/event.js";
+import ChangeElementEvent from "../events/change-element.js";
 import Tool from "./tool.js";
-
-class MoveEvent extends Event {
-  constructor(selectedElement, initialTransform, newTransform) {
-    super();
-    this.selectedElement = selectedElement;
-    this.initialTransform = initialTransform;
-    this.newTransform = newTransform;
-  }
-
-  do() {
-    this.selectedElement.setAttribute("transform", this.newTransform);
-  }
-
-  undo() {
-    this.selectedElement.setAttribute("transform", this.initialTransform);
-  }
-}
 
 export default class MoveTool extends Tool {
   constructor(svgBoard) {
@@ -57,18 +40,26 @@ export default class MoveTool extends Tool {
       }
     );
 
-    const moveEvent = new MoveEvent(
-      this.selectedElement,
-      this.initialTransform,
-      translate
-    );
-    this.svgBoard.history.do(moveEvent);
+    this.selectedElement.setAttribute("transform", translate);
 
     this.startX = currentX;
     this.startY = currentY;
   }
 
   onMouseUp(event) {
+    if (!this.selectedElement) return;
+
+    const moveEvent = new ChangeElementEvent(
+      this.selectedElement,
+      {
+        transform: this.selectedElement.getAttribute("transform"),
+      },
+      {
+        transform: this.initialTransform,
+      }
+    );
+    this.svgBoard.dispatchEvent(moveEvent);
+
     this.selectedElement = null;
   }
 }

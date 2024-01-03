@@ -1,5 +1,5 @@
 import Tool from "./tool.js";
-import CreateShapeEvent from "../events/create-shape.js";
+import CreateElementEvent from "../events/create-element.js";
 
 export default class DrawLineTool extends Tool {
   constructor(svgBoard) {
@@ -24,7 +24,7 @@ export default class DrawLineTool extends Tool {
     this.previewLine.setAttribute("y1", this.startY);
     this.previewLine.setAttribute("x2", this.startX);
     this.previewLine.setAttribute("y2", this.startY);
-    this.previewLine.setAttribute("stroke", "red");
+    this.previewLine.setAttribute("stroke", this.svgBoard.customizer.stroke.color);
 
     this.svgBoard.container.appendChild(this.previewLine);
   }
@@ -56,10 +56,9 @@ export default class DrawLineTool extends Tool {
     this.line.setAttribute("y1", this.startY);
     this.line.setAttribute("x2", currentX);
     this.line.setAttribute("y2", currentY);
-    this.line.setAttribute("stroke", "black");
-    this.line.setAttribute("stroke-width", 2);
+    this.line.setAttribute("stroke", this.svgBoard.customizer.stroke.color);
 
-    const createLine = new CreateShapeEvent(this.svgBoard, this.line);
+    const createLine = new CreateElementEvent(this.svgBoard, this.line);
     this.svgBoard.history.do(createLine);
 
     this.svgBoard.container.removeChild(this.previewLine);

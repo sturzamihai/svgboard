@@ -1,5 +1,5 @@
 import Tool from "./tool.js";
-import DeleteShapeEvent from "../events/delete-shape.js";
+import DeleteElementEvent from "../events/delete-element.js";
 
 export default class SelectTool extends Tool {
   constructor(svgBoard) {
@@ -88,7 +88,7 @@ export default class SelectTool extends Tool {
     if (event.key === "Backspace" || event.key === "Delete") {
       this.svgBoard.selectedElements.forEach((element) => {
         console.log(element);
-        const deleteEvent = new DeleteShapeEvent(this.svgBoard, element);
+        const deleteEvent = new DeleteElementEvent(this.svgBoard, element);
         this.svgBoard.history.do(deleteEvent);
       });
 

@@ -1,6 +1,6 @@
 import Event from "./event.js";
 
-export default class CreateShapeEvent extends Event {
+export default class CreateElementEvent extends Event {
   constructor(svgBoard, shape) {
     super();
     this.svgBoard = svgBoard;
