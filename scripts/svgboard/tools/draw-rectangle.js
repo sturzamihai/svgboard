@@ -1,6 +1,7 @@
-import Command from "./command.js";
+import Tool from "./tool.js";
+import CreateShapeEvent from "../events/create-shape.js";
 
-export default class DrawRectangle extends Command {
+export default class DrawRectangle extends Tool {
   constructor(svgBoard) {
     super(svgBoard, "Draw a rectangle", "images/rectangle.svg");
 
@@ -68,12 +69,13 @@ export default class DrawRectangle extends Command {
     this.rectangle.setAttribute("fill", "red");
     this.rectangle.setAttribute("stroke", "transparent");
 
-    this.svgBoard.container.appendChild(this.rectangle);
+    const createRectangle = new CreateShapeEvent(this.svgBoard, this.rectangle);
+    this.svgBoard.history.do(createRectangle);
 
     this.svgBoard.container.removeChild(this.previewRectangle);
     this.previewRectangle = null;
 
-    this.svgBoard.setCommand(null);
+    this.svgBoard.setActiveTool(null);
     this.button.classList.remove("active");
   }
 }

@@ -1,6 +1,7 @@
-import Command from "./command.js";
+import CreateShapeEvent from "../events/create-shape.js";
+import Tool from "./tool.js";
 
-export default class DrawCircle extends Command {
+export default class DrawCircle extends Tool {
   constructor(board, x, y) {
     super(board, "Draw a circle", "images/circle.svg");
 
@@ -69,11 +70,13 @@ export default class DrawCircle extends Command {
     this.circle.setAttribute("stroke", "black");
 
     this.svgBoard.container.removeChild(this.previewCircle);
-    this.svgBoard.container.appendChild(this.circle);
+
+    const createCircle = new CreateShapeEvent(this.svgBoard, this.circle);
+    this.svgBoard.history.do(createCircle);
 
     this.previewCircle = null;
 
-    this.svgBoard.setCommand(null);
+    this.svgBoard.setActiveTool(null);
     this.button.classList.remove("active");
   }
 }
