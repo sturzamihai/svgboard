@@ -3,7 +3,7 @@ import DeleteShapeEvent from "../events/delete-shape.js";
 
 export default class SelectTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Selection", "images/select.svg");
+    super(svgBoard, "Select", "images/select.svg");
 
     this.selectionBox = null;
     this.startX = 0;
