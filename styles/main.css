@@ -1,0 +1,11 @@
+@import url("./variables.css");
+@import url("./toolbar.css");
+@import url("./board.css");
+
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+  overflow: hidden;
+}
