@@ -1,7 +1,7 @@
 import CreateShapeEvent from "../events/create-shape.js";
 import Tool from "./tool.js";
 
-export default class DrawCircle extends Tool {
+export default class DrawCircleTool extends Tool {
   constructor(board, x, y) {
     super(board, "Draw a circle", "images/circle.svg");
 
@@ -24,8 +24,11 @@ export default class DrawCircle extends Tool {
     this.previewCircle.setAttribute("cy", this.startY);
     this.previewCircle.setAttribute("rx", 0);
     this.previewCircle.setAttribute("ry", 0);
-    this.previewCircle.setAttribute("fill", "transparent");
+    this.previewCircle.setAttribute("fill", "red");
     this.previewCircle.setAttribute("stroke", "red");
+    this.previewCircle.setAttribute("fill-opacity", 0.1);
+    this.previewCircle.setAttribute("stroke-opacity", 0.3);
+
 
     this.svgBoard.container.appendChild(this.previewCircle);
   }
@@ -57,6 +60,12 @@ export default class DrawCircle extends Tool {
     const y = (this.startY + currentY) / 2;
     const rx = Math.abs(this.startX - currentX) / 2;
     const ry = Math.abs(this.startY - currentY) / 2;
+
+    if (rx === 0 || ry === 0) {
+      this.svgBoard.container.removeChild(this.previewCircle);
+      this.previewCircle = null;
+      return;
+    }
 
     this.circle = document.createElementNS(
       "http://www.w3.org/2000/svg",

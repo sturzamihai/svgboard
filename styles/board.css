@@ -4,6 +4,5 @@
 }
 
 #board .selected {
-  stroke: blue;
-  stroke-width: 2px;
+  /* TODO */
 }

@@ -4,11 +4,11 @@ export default class EventHistory {
     this.future = [];
   }
 
-  do(action) {
-    this.history.push(action);
+  do(event) {
+    this.history.push(event);
     this.future = [];
 
-    action.do();
+    event.do();
   }
 
   undo() {
@@ -23,7 +23,12 @@ export default class EventHistory {
     if (this.future.length > 0) {
       const action = this.future.pop();
       this.history.push(action);
-      action.redo();
+      action.do();
     }
+  }
+
+  clear() {
+    this.history = [];
+    this.future = [];
   }
 }

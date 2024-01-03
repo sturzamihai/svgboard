@@ -1,17 +1,19 @@
 #toolbar {
   position: absolute;
-  top: 25px;
-  left: 25px;
-  padding: 15px 10px;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 15px;
   border-radius: 25px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 3px;
   background: #fff;
 }
 
-#toolbar button {
+#toolbar button, #history button {
   margin: 0px;
   padding: 3px;
   border: none;
@@ -22,18 +24,19 @@
   transition: all 0.3s ease;
 }
 
-#toolbar button:hover {
+#toolbar button:hover, #history button:hover {
   background: #eee;
 }
 
-#toolbar button.active {
+#toolbar button.active, #history button:active {
   background: #eee;
 }
 
 #toolbar .separator {
-  height: 1px;
+  height: 25px;
+  width: 1px;
   background: #dcdcdc;
-  margin: 5px 0px;
+  margin: 0 5px;
 }
 
 #toolbar .color-picker {
@@ -55,4 +58,18 @@
 
 #toolbar .color-picker .preset:hover {
   border: 2px solid rgb(90, 90, 254);
+}
+
+#history {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 5px 10px;
+  border-radius: 25px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  gap: 3px;
+  background: #fff;
 }

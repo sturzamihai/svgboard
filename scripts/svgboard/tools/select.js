@@ -57,26 +57,30 @@ export default class SelectTool extends Tool {
       const boundingBox = element.getBoundingClientRect();
       const selectionBox = this.selectionBox.getBoundingClientRect();
 
-      if (this.isIntersecting(boundingBox, selectionBox)) {
-        element.classList.add("selected");
-        this.svgBoard.selectedElements.push(element);
+      if (this.isContained(boundingBox, selectionBox)) {
+        this.svgBoard.addSelectedElement(element);
       } else {
-        element.classList.remove("selected");
-        this.svgBoard.selectedElements = this.svgBoard.selectedElements.filter(
-          (selectedElement) => selectedElement !== element
-        );
+        this.svgBoard.removeSelectedElement(element);
       }
     });
 
     this.svgBoard.container.removeChild(this.selectionBox);
+    this.selectionBox = null;
   }
 
-  isIntersecting(element1, element2) {
+  onMouseLeave(event) {
+    if (!this.selectionBox) return;
+
+    this.svgBoard.container.removeChild(this.selectionBox);
+    this.selectionBox = null;
+  }
+
+  isContained(element1, element2) {
     return (
-      element1.left < element2.right &&
-      element1.right > element2.left &&
-      element1.top < element2.bottom &&
-      element1.bottom > element2.top
+      element1.left >= element2.left &&
+      element1.right <= element2.right &&
+      element1.top >= element2.top &&
+      element1.bottom <= element2.bottom
     );
   }
 

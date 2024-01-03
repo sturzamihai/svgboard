@@ -1,7 +1,7 @@
 import Tool from "./tool.js";
 import CreateShapeEvent from "../events/create-shape.js";
 
-export default class DrawRectangle extends Tool {
+export default class DrawRectangleTool extends Tool {
   constructor(svgBoard) {
     super(svgBoard, "Draw a rectangle", "images/rectangle.svg");
 
@@ -57,6 +57,12 @@ export default class DrawRectangle extends Tool {
     const y = Math.min(this.startY, currentY);
     const width = Math.abs(this.startX - currentX);
     const height = Math.abs(this.startY - currentY);
+
+    if (width === 0 || height === 0) {
+      this.svgBoard.container.removeChild(this.previewRectangle);
+      this.previewRectangle = null;
+      return;
+    }
 
     this.rectangle = document.createElementNS(
       "http://www.w3.org/2000/svg",

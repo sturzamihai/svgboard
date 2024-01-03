@@ -1,7 +1,7 @@
 import Tool from "./tool.js";
 import CreateShapeEvent from "../events/create-shape.js";
 
-export default class DrawLine extends Tool {
+export default class DrawLineTool extends Tool {
   constructor(svgBoard) {
     super(svgBoard, "Draw a line", "images/line.svg");
 
@@ -44,6 +44,12 @@ export default class DrawLine extends Tool {
 
     const currentX = event.clientX;
     const currentY = event.clientY;
+
+    if(currentX === this.startX && currentY === this.startY) {
+      this.svgBoard.container.removeChild(this.previewLine);
+      this.previewLine = null;
+      return;
+    }
 
     this.line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     this.line.setAttribute("x1", this.startX);
