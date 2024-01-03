@@ -1,6 +1,7 @@
-import Command from "./command.js";
+import Tool from "./tool.js";
+import CreateElementEvent from "../events/create-element.js";
 
-export default class DrawRectangle extends Command {
+export default class DrawRectangleTool extends Tool {
   constructor(svgBoard) {
     super(svgBoard, "Draw a rectangle", "images/rectangle.svg");
 
@@ -23,8 +24,14 @@ export default class DrawRectangle extends Command {
     this.previewRectangle.setAttribute("y", this.startY);
     this.previewRectangle.setAttribute("width", 0);
     this.previewRectangle.setAttribute("height", 0);
-    this.previewRectangle.setAttribute("fill", "transparent");
-    this.previewRectangle.setAttribute("stroke", "red");
+    this.previewRectangle.setAttribute(
+      "fill",
+      this.svgBoard.customizer.background.color
+    );
+    this.previewRectangle.setAttribute(
+      "stroke",
+      this.svgBoard.customizer.stroke.color
+    );
 
     this.svgBoard.container.appendChild(this.previewRectangle);
   }
@@ -57,6 +64,12 @@ export default class DrawRectangle extends Command {
     const width = Math.abs(this.startX - currentX);
     const height = Math.abs(this.startY - currentY);
 
+    if (width === 0 || height === 0) {
+      this.svgBoard.container.removeChild(this.previewRectangle);
+      this.previewRectangle = null;
+      return;
+    }
+
     this.rectangle = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
@@ -65,15 +78,25 @@ export default class DrawRectangle extends Command {
     this.rectangle.setAttribute("y", y);
     this.rectangle.setAttribute("width", width);
     this.rectangle.setAttribute("height", height);
-    this.rectangle.setAttribute("fill", "red");
-    this.rectangle.setAttribute("stroke", "transparent");
+    this.rectangle.setAttribute(
+      "fill",
+      this.svgBoard.customizer.background.color
+    );
+    this.rectangle.setAttribute(
+      "stroke",
+      this.svgBoard.customizer.stroke.color
+    );
 
-    this.svgBoard.container.appendChild(this.rectangle);
+    const createRectangle = new CreateElementEvent(
+      this.svgBoard,
+      this.rectangle
+    );
+    this.svgBoard.history.do(createRectangle);
 
     this.svgBoard.container.removeChild(this.previewRectangle);
     this.previewRectangle = null;
 
-    this.svgBoard.setCommand(null);
+    this.svgBoard.setActiveTool(null);
     this.button.classList.remove("active");
   }
 }

@@ -1,4 +1,4 @@
-export default class Command {
+export default class Tool {
   constructor(svgBoard, title, iconSrc) {
     this.svgBoard = svgBoard;
     this.title = title;
@@ -8,10 +8,10 @@ export default class Command {
 
   createButton() {
     const button = document.createElement("button");
-    button.innerHTML = `<img src="${this.iconSrc}" alt="${this.title}"/>`;
+    button.innerHTML = `<img src="${this.iconSrc}" alt="${this.title}" height="25" width="25"/> `;
     button.addEventListener("click", () => {
       button.classList.add("active");
-      this.svgBoard.setCommand(this);
+      this.svgBoard.setActiveTool(this);
     });
     return button;
   }
@@ -20,4 +20,5 @@ export default class Command {
   onMouseMove(event) {}
   onMouseUp(event) {}
   onMouseLeave(event) {}
+  onKeyDown(event) {}
 }

@@ -1,6 +1,5 @@
 @import url("./variables.css");
-@import url("./toolbar.css");
-@import url("./board.css");
+@import url("./svgboard/main.css");
 
 body {
   font-family: "Inter", sans-serif;
