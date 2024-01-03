@@ -1,38 +1,49 @@
+import EventHistory from "./events/event-history.js";
+
 export default class SVGBoard {
   constructor(containerId, toolbarId) {
     this.container = document.getElementById(containerId);
     this.toolbar = document.getElementById(toolbarId);
 
-    this.commands = [];
-    this.currentCommand = null;
+    this.history = new EventHistory();
+
+    this.selectedElements = [];
+    this.tools = [];
+    this.activeTool = null;
     this.bindEvents();
   }
 
-  addCommand(command) {
-    this.commands.push(command);
+  addTool(command) {
+    this.tools.push(command);
     this.toolbar.appendChild(command.button);
   }
 
-  setCommand(command) {
-    if (this.currentCommand) {
-      this.currentCommand.button.classList.remove("active");
+  setActiveTool(command) {
+    if (this.activeTool) {
+      this.activeTool.button.classList.remove("active");
     }
 
-    this.currentCommand = command;
+    if (this.activeTool === command) {
+      this.activeTool = null;
+      return;
+    }
+
+    this.activeTool = command;
   }
 
   bindEvents() {
     this.container.addEventListener("mousedown", (e) =>
-      this.currentCommand?.onMouseDown(e)
+      this.activeTool?.onMouseDown(e)
     );
     this.container.addEventListener("mousemove", (e) =>
-      this.currentCommand?.onMouseMove(e)
+      this.activeTool?.onMouseMove(e)
     );
     this.container.addEventListener("mouseup", (e) =>
-      this.currentCommand?.onMouseUp(e)
+      this.activeTool?.onMouseUp(e)
     );
     this.container.addEventListener("mouseleave", (e) =>
-      this.currentCommand?.onMouseLeave(e)
+      this.activeTool?.onMouseLeave(e)
     );
+    window.addEventListener("keydown", (e) => this.activeTool?.onKeyDown(e));
   }
 }
