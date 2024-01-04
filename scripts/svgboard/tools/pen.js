@@ -3,7 +3,7 @@ import Tool from "./tool.js";
 
 export default class PenTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Pen", "images/pen.svg");
+    super(svgBoard, "Pen", "media/pen.svg");
     this.currentPath = null;
 
     this.isDrawing = false;
@@ -51,7 +51,6 @@ export default class PenTool extends Tool {
         this.currentPath
       );
       this.svgBoard.dispatchEvent(createEvent);
-      
     } else if (this.isDrawing) {
       const d = this.currentPath.getAttribute("d");
       this.currentPath.setAttribute(
@@ -125,6 +124,7 @@ export default class PenTool extends Tool {
   makeHandleDraggable(handle) {
     let isDragging = false;
     let startX, startY;
+    let pathDefs;
 
     const onMouseMove = (event) => {
       if (!isDragging) return;
@@ -155,6 +155,7 @@ export default class PenTool extends Tool {
       isDragging = true;
       startX = event.clientX;
       startY = event.clientY;
+      pathDefs = this.currentPath.getAttribute("d");
 
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener(
@@ -162,6 +163,16 @@ export default class PenTool extends Tool {
         () => {
           isDragging = false;
           window.removeEventListener("mousemove", onMouseMove);
+          const changeEvent = new ChangeElementEvent(
+            this.currentPath,
+            {
+              path: this.currentPath.getAttribute("d"),
+            },
+            {
+              path: pathDefs,
+            }
+          );
+          this.svgBoard.dispatchEvent(changeEvent);
         },
         { once: true }
       );
