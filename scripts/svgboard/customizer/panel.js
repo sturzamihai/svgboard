@@ -40,6 +40,19 @@ export default class Customizer {
     document.body.appendChild(this.panel);
   }
 
+  showPanel() {
+    this.panel.classList.add("show");
+    const selectedFillColor = this.svgBoard.selectedElements.length === 1 ? this.svgBoard.selectedElements[0].getAttribute("fill") : null;
+    const selectedStrokeColor = this.svgBoard.selectedElements.length === 1 ? this.svgBoard.selectedElements[0].getAttribute("stroke") : null;
+
+    this.background.setColor(selectedFillColor);
+    this.stroke.setColor(selectedStrokeColor);
+  }
+
+  hidePanel() {
+    this.panel.classList.remove("show");
+  }
+
   changeSelectedElementsColor(color) {
     this.svgBoard.selectedElements.forEach((element) => {
       const changeEvent = new ChangeElementEvent(element, {
@@ -47,14 +60,6 @@ export default class Customizer {
       });
       this.svgBoard.dispatchEvent(changeEvent);
     });
-  }
-
-  showPanel() {
-    this.panel.classList.add("show");
-  }
-
-  hidePanel() {
-    this.panel.classList.remove("show");
   }
 
   changeSelectedElementsStroke(color) {

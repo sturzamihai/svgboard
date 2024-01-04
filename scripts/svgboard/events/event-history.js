@@ -8,8 +8,6 @@ export default class EventHistory {
     this.history.push(event);
     this.future = [];
 
-    console.log(this.history, this.future)
-
     event.do();
   }
 

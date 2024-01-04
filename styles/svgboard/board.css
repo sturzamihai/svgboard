@@ -4,5 +4,6 @@
 }
 
 #board .selected {
-  /* TODO */
+  stroke-dasharray: 4;
+  stroke: blue;
 }

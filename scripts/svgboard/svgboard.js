@@ -15,6 +15,7 @@ export default class SVGBoard {
     this.addTools(tools);
     this.bindEvents();
     this.loadState();
+    this.setActiveTool(null);
 
     this.saveInterval = setInterval(() => this.saveState(), 1000);
   }
@@ -39,7 +40,10 @@ export default class SVGBoard {
 
   addTool(tool) {
     this.tools.push(tool);
-    this.toolbar.appendChild(tool.button);
+
+    if (tool.button) {
+      this.toolbar.appendChild(tool.button);
+    }
   }
 
   setActiveTool(tool) {
@@ -47,12 +51,13 @@ export default class SVGBoard {
       this.activeTool.button.classList.remove("active");
     }
 
-    if (this.activeTool === tool) {
-      this.activeTool = null;
-      return;
+    if (tool === null || this.activeTool === tool) {
+      this.activeTool = this.tools[0];
+      this.activeTool.button.classList.add("active");
+    } else {
+      this.activeTool = tool;
+      this.activeTool.button.classList.add("active");
     }
-
-    this.activeTool = tool;
   }
 
   bindEvents() {

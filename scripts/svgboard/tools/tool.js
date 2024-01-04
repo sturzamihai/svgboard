@@ -10,7 +10,6 @@ export default class Tool {
     const button = document.createElement("button");
     button.innerHTML = `<img src="${this.iconSrc}" alt="${this.title}" height="25" width="25"/> `;
     button.addEventListener("click", () => {
-      button.classList.add("active");
       this.svgBoard.setActiveTool(this);
     });
     return button;

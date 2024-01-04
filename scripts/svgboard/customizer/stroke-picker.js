@@ -4,7 +4,7 @@ export default class StrokePicker extends ColorPicker {
   constructor(presets, onColorChange, onStrokeChange) {
     super(presets, onColorChange);
     this.onStrokeChange = onStrokeChange;
-    this.stroke = 1;
+    this.stroke = 1.5;
   }
 
   createInputs() {
