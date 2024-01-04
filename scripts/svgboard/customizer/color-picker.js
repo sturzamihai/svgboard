@@ -3,7 +3,6 @@ export default class ColorPicker {
     this.presets = presets;
     this.onColorChange = onColorChange;
     this.color = presets[0];
-
   }
 
   createInputs() {
@@ -17,7 +16,7 @@ export default class ColorPicker {
       const presetButton = document.createElement("button");
       presetButton.classList.add("preset");
       presetButton.style.backgroundColor = preset;
-      if(preset === "transparent") {
+      if (preset === "transparent") {
         presetButton.innerHTML = `<img src="images/none.svg" alt="transparent" height="15" width="15"/> `;
       }
       presetButton.addEventListener("click", () => {
@@ -30,23 +29,30 @@ export default class ColorPicker {
     const customColorContainer = document.createElement("div");
     customColorContainer.classList.add("custom-color");
 
-    const customColorPreview = document.createElement("div");
-    customColorPreview.classList.add("preview");
-    
-    const customColorInput = document.createElement("input");
-    customColorInput.value = this.color;
-    
-    customColorInput.addEventListener("change", () => {
-      customColorPreview.style.backgroundColor = customColorInput.value;
-      this.color = customColorInput.value;
-      this.onColorChange(customColorInput.value);
+    this.colorPreview = document.createElement("div");
+    this.colorPreview.classList.add("preview");
+
+    this.colorInput = document.createElement("input");
+    this.colorInput.value = this.color;
+
+    this.colorInput.addEventListener("change", () => {
+      this.colorPreview.style.backgroundColor = this.colorInput.value;
+      this.color = this.colorInput.value;
+      this.onColorChange(this.colorInput.value);
     });
-    customColorContainer.appendChild(customColorPreview);
-    customColorContainer.appendChild(customColorInput);
+    customColorContainer.appendChild(this.colorPreview);
+    customColorContainer.appendChild(this.colorInput);
 
     container.appendChild(presetsContainer);
     container.appendChild(customColorContainer);
 
     return container;
+  }
+
+  setColor(color) {
+    if(!this.colorInput) return;
+
+    this.colorInput.value = color;
+    this.colorPreview.style.backgroundColor = color === "null" ? "transparent" : color;
   }
 }

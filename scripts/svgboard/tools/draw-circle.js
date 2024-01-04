@@ -78,7 +78,8 @@ export default class DrawCircleTool extends Tool {
     this.svgBoard.container.removeChild(this.previewCircle);
 
     const createCircle = new CreateElementEvent(this.svgBoard, this.circle);
-    this.svgBoard.history.do(createCircle);
+    this.svgBoard.dispatchEvent(createCircle);
+    this.svgBoard.addSelectedElement(this.circle);
 
     this.previewCircle = null;
 
