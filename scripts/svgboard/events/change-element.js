@@ -8,12 +8,14 @@ export default class ChangeElementEvent extends Event {
       stroke: null,
       strokeWidth: null,
       transform: null,
+      path: null,
     },
     initial = {
       fill: null,
       stroke: null,
       strokeWidth: null,
       transform: null,
+      path: null,
     }
   ) {
     super();
@@ -26,11 +28,13 @@ export default class ChangeElementEvent extends Event {
       initial.strokeWidth || selectedElement.getAttribute("stroke-width");
     this.initialTransform =
       initial.transform || selectedElement.getAttribute("transform");
+    this.initialPath = initial.path || selectedElement.getAttribute("d");
 
     this.newFill = changes.fill || this.initialFill;
     this.newStroke = changes.stroke || this.initialStroke;
     this.newStrokeWidth = changes.strokeWidth || this.initialStrokeWidth;
     this.newTransform = changes.transform || this.initialTransform;
+    this.newPath = changes.path || this.initialPath;
   }
 
   do() {
@@ -41,6 +45,7 @@ export default class ChangeElementEvent extends Event {
       this.selectedElement.setAttribute("stroke-width", this.newStrokeWidth);
     if (this.newTransform)
       this.selectedElement.setAttribute("transform", this.newTransform);
+    if (this.newPath) this.selectedElement.setAttribute("d", this.newPath);
   }
 
   undo() {
@@ -55,5 +60,7 @@ export default class ChangeElementEvent extends Event {
       );
     if (this.initialTransform)
       this.selectedElement.setAttribute("transform", this.initialTransform);
+    if (this.initialPath)
+      this.selectedElement.setAttribute("d", this.initialPath);
   }
 }
