@@ -20,4 +20,5 @@ export default class Tool {
   onMouseUp(event) {}
   onMouseLeave(event) {}
   onKeyDown(event) {}
+  cleanup() {}
 }

@@ -1,5 +1,6 @@
 import Tool from "./tool.js";
 import ChangeElementEvent from "../events/change-element.js";
+import DeleteElementEvent from "../events/delete-element.js";
 
 export default class PointerTool extends Tool {
   constructor(svgBoard) {
@@ -13,6 +14,12 @@ export default class PointerTool extends Tool {
     this.multipleBox = null;
   }
 
+  cleanup() {
+    this.clearSelectionBox();
+    this.clearMultipleBox();
+    this.svgBoard.clearSelectedElements();
+  }
+
   onMouseDown(event) {
     const target = event.target;
 
@@ -21,10 +28,7 @@ export default class PointerTool extends Tool {
     this.isDragging = false;
 
     if (target === this.svgBoard.container) {
-      if (this.multipleBox) {
-        this.svgBoard.container.removeChild(this.multipleBox);
-        this.multipleBox = null;
-      }
+      this.clearMultipleBox();
 
       this.svgBoard.clearSelectedElements();
       this.selectionBox = document.createElementNS(
@@ -45,10 +49,9 @@ export default class PointerTool extends Tool {
         this.initialTransforms.push(element.getAttribute("transform") || "");
       });
     } else {
-      if (this.multipleBox) {
-        this.svgBoard.container.removeChild(this.multipleBox);
-        this.multipleBox = null;
-      }
+      if (event.target.getAttribute("editor-ignore") === "true") return;
+
+      this.clearMultipleBox();
 
       this.svgBoard.clearSelectedElements();
       this.svgBoard.addSelectedElement(target);
@@ -135,8 +138,7 @@ export default class PointerTool extends Tool {
         }
       });
 
-      this.svgBoard.container.removeChild(this.selectionBox);
-      this.selectionBox = null;
+      this.clearSelectionBox();
 
       if (this.svgBoard.selectedElements.length > 1) {
         this.multipleBox = document.createElementNS(
@@ -157,6 +159,7 @@ export default class PointerTool extends Tool {
         this.multipleBox.setAttribute("stroke", "black");
         this.multipleBox.setAttribute("stroke-dasharray", 4);
         this.multipleBox.setAttribute("select-box", true);
+        this.multipleBox.setAttribute("editor-ignore", true);
 
         this.svgBoard.container.appendChild(this.multipleBox);
       }
@@ -178,18 +181,12 @@ export default class PointerTool extends Tool {
       this.svgBoard.clearSelectedElements();
       this.isDragging = false;
 
-      if (this.multipleBox) {
-        this.svgBoard.container.removeChild(this.multipleBox);
-        this.multipleBox = null;
-      }
+      this.clearMultipleBox();
     }
   }
 
   onMouseLeave(event) {
-    if (this.selectionBox) {
-      this.svgBoard.container.removeChild(this.selectionBox);
-      this.selectionBox = null;
-    }
+    this.clearSelectionBox();
   }
 
   isContained(element1, element2) {
@@ -215,27 +212,31 @@ export default class PointerTool extends Tool {
 
   onKeyDown(event) {
     if (event.key === "Escape") {
-      if (this.selectionBox) {
-        this.svgBoard.container.removeChild(this.selectionBox);
-        this.selectionBox = null;
-      }
-
-      if (this.multipleBox) {
-        this.svgBoard.container.removeChild(this.multipleBox);
-        this.multipleBox = null;
-      }
-
+      this.clearSelectionBox();
+      this.clearMultipleBox();
       this.svgBoard.clearSelectedElements();
     }
 
     if (event.key === "Backspace" || event.key === "Delete") {
       if (document.activeElement.tagName === "INPUT") return;
 
-      this.svgBoard.selectedElements.forEach((element) => {
-        this.svgBoard.container.removeChild(element);
-      });
-
+      const deleteEvent = new DeleteElementEvent(this.svgBoard, this.svgBoard.selectedElements);
+      this.svgBoard.dispatchEvent(deleteEvent);
       this.svgBoard.clearSelectedElements();
+    }
+  }
+
+  clearSelectionBox() {
+    if (this.selectionBox) {
+      this.svgBoard.container.removeChild(this.selectionBox);
+      this.selectionBox = null;
+    }
+  }
+
+  clearMultipleBox() {
+    if (this.multipleBox) {
+      this.svgBoard.container.removeChild(this.multipleBox);
+      this.multipleBox = null;
     }
   }
 }

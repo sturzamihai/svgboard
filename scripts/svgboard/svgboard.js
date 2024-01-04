@@ -49,6 +49,7 @@ export default class SVGBoard {
   setActiveTool(tool) {
     if (this.activeTool) {
       this.activeTool.button.classList.remove("active");
+      this.activeTool.cleanup();
     }
 
     if (tool === null || this.activeTool === tool) {
@@ -100,9 +101,34 @@ export default class SVGBoard {
     this.history.do(event);
   }
 
+  createSelectionBox(boundingBox, selectionIndex) {
+    const selectionBox = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    selectionBox.setAttribute("x", boundingBox.x - 5);
+    selectionBox.setAttribute("y", boundingBox.y - 5);
+    selectionBox.setAttribute("width", boundingBox.width + 10);
+    selectionBox.setAttribute("height", boundingBox.height + 10);
+    selectionBox.setAttribute("fill", "none");
+    selectionBox.setAttribute("stroke", "black");
+    selectionBox.setAttribute("stroke-dasharray", 4);
+    selectionBox.setAttribute("select-index", selectionIndex);
+    selectionBox.setAttribute("editor-ignore", true);
+
+    return selectionBox;
+  }
+
   addSelectedElement(element) {
     this.selectedElements.push(element);
-    element.classList.add("selected");
+
+    // const boundingBox = element.getBoundingClientRect();
+    // const selectionBox = this.createSelectionBox(
+    //   boundingBox,
+    //   this.selectedElements.length - 1
+    // );
+    // this.container.appendChild(selectionBox);
+
     this.customizer.showPanel();
   }
 
@@ -110,7 +136,6 @@ export default class SVGBoard {
     this.selectedElements = this.selectedElements.filter(
       (el) => el !== element
     );
-    element.classList.remove("selected");
 
     if (this.selectedElements.length === 0) {
       this.customizer.hidePanel();
@@ -137,9 +162,17 @@ export default class SVGBoard {
   }
 
   saveState() {
+    const editorState = this.container.cloneNode(true);
+
+    const ignoreElements = editorState.querySelectorAll("[editor-ignore]");
+    ignoreElements.forEach((element) => {
+      element.remove();
+    });
+
     const serializedContainer = new XMLSerializer().serializeToString(
-      this.container
+      editorState
     );
+
     localStorage.setItem("svgboard", serializedContainer);
   }
 }
