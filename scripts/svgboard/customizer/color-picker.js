@@ -17,7 +17,7 @@ export default class ColorPicker {
       presetButton.classList.add("preset");
       presetButton.style.backgroundColor = preset;
       if (preset === "transparent") {
-        presetButton.innerHTML = `<img src="images/none.svg" alt="transparent" height="15" width="15"/> `;
+        presetButton.innerHTML = `<img src="media/none.svg" alt="transparent" height="15" width="15"/> `;
       }
       presetButton.addEventListener("click", () => {
         this.color = preset;

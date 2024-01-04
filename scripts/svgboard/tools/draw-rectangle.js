@@ -3,7 +3,7 @@ import CreateElementEvent from "../events/create-element.js";
 
 export default class DrawRectangleTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Draw a rectangle", "images/rectangle.svg");
+    super(svgBoard, "Draw a rectangle", "media/rectangle.svg");
 
     this.rectangle = null;
     this.previewRectangle = null;

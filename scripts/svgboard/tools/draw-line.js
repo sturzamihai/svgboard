@@ -3,7 +3,7 @@ import CreateElementEvent from "../events/create-element.js";
 
 export default class DrawLineTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Draw a line", "images/line.svg");
+    super(svgBoard, "Draw a line", "media/line.svg");
 
     this.line = null;
     this.previewLine = null;

@@ -84,11 +84,11 @@ export default class SVGBoard {
     container.id = "history";
 
     const undoButton = document.createElement("button");
-    undoButton.innerHTML = `<img src="images/undo.svg" alt="Undo" height="25" width="25"/> `;
+    undoButton.innerHTML = `<img src="media/undo.svg" alt="Undo" height="25" width="25"/> `;
     undoButton.addEventListener("click", () => this.history.undo());
 
     const redoButton = document.createElement("button");
-    redoButton.innerHTML = `<img src="images/redo.svg" alt="Redo" height="25" width="25"/> `;
+    redoButton.innerHTML = `<img src="media/redo.svg" alt="Redo" height="25" width="25"/> `;
     redoButton.addEventListener("click", () => this.history.redo());
 
     container.appendChild(undoButton);

@@ -2,7 +2,7 @@ import Tool from "./tool.js";
 
 export default class DownloadTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Download", "images/download.svg");
+    super(svgBoard, "Download", "media/download.svg");
   }
 
   createButton() {
@@ -17,11 +17,11 @@ export default class DownloadTool extends Tool {
     optionIsland.classList.add("option-island");
 
     const pngButton = document.createElement("button");
-    pngButton.innerHTML = `<img src="images/image.svg" alt="PNG" height="25" width="25"/> `;
+    pngButton.innerHTML = `<img src="media/image.svg" alt="PNG" height="25" width="25"/> `;
     pngButton.addEventListener("click", () => this.downloadPNG());
 
     const svgButton = document.createElement("button");
-    svgButton.innerHTML = `<img src="images/path.svg" alt="SVG" height="25" width="25"/> `;
+    svgButton.innerHTML = `<img src="media/path.svg" alt="SVG" height="25" width="25"/> `;
     svgButton.addEventListener("click", () => this.downloadSVG());
 
     optionIsland.appendChild(pngButton);

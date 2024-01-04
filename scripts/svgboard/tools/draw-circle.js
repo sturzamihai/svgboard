@@ -3,7 +3,7 @@ import Tool from "./tool.js";
 
 export default class DrawCircleTool extends Tool {
   constructor(board, x, y) {
-    super(board, "Draw a circle", "images/circle.svg");
+    super(board, "Draw a circle", "media/circle.svg");
 
     this.circle = null;
     this.previewCircle = null;

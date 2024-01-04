@@ -4,7 +4,7 @@ import DeleteElementEvent from "../events/delete-element.js";
 
 export default class PointerTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Pointer", "images/pointer.svg");
+    super(svgBoard, "Pointer", "media/pointer.svg");
 
     this.startX = 0;
     this.startY = 0;

@@ -3,7 +3,7 @@ import Tool from "./tool.js";
 
 export default class PenTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Pen", "images/pen.svg");
+    super(svgBoard, "Pen", "media/pen.svg");
     this.currentPath = null;
 
     this.isDrawing = false;

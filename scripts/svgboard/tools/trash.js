@@ -3,7 +3,7 @@ import Tool from "./tool.js";
 
 export default class TrashTool extends Tool {
   constructor(svgBoard) {
-    super(svgBoard, "Trash", "images/trash.svg");
+    super(svgBoard, "Trash", "media/trash.svg");
   }
 
   createButton() {
