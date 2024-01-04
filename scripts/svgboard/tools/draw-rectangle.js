@@ -91,7 +91,8 @@ export default class DrawRectangleTool extends Tool {
       this.svgBoard,
       this.rectangle
     );
-    this.svgBoard.history.do(createRectangle);
+    this.svgBoard.dispatchEvent(createRectangle);
+    this.svgBoard.addSelectedElement(this.rectangle);
 
     this.svgBoard.container.removeChild(this.previewRectangle);
     this.previewRectangle = null;

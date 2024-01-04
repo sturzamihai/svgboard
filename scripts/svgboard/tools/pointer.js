@@ -25,7 +25,7 @@ export default class PointerTool extends Tool {
         this.svgBoard.container.removeChild(this.multipleBox);
         this.multipleBox = null;
       }
-      
+
       this.svgBoard.clearSelectedElements();
       this.selectionBox = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -211,5 +211,31 @@ export default class PointerTool extends Tool {
     );
 
     element.setAttribute("transform", translate);
+  }
+
+  onKeyDown(event) {
+    if (event.key === "Escape") {
+      if (this.selectionBox) {
+        this.svgBoard.container.removeChild(this.selectionBox);
+        this.selectionBox = null;
+      }
+
+      if (this.multipleBox) {
+        this.svgBoard.container.removeChild(this.multipleBox);
+        this.multipleBox = null;
+      }
+
+      this.svgBoard.clearSelectedElements();
+    }
+
+    if (event.key === "Backspace" || event.key === "Delete") {
+      if (document.activeElement.tagName === "INPUT") return;
+
+      this.svgBoard.selectedElements.forEach((element) => {
+        this.svgBoard.container.removeChild(element);
+      });
+
+      this.svgBoard.clearSelectedElements();
+    }
   }
 }

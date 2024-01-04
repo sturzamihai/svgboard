@@ -24,7 +24,10 @@ export default class DrawLineTool extends Tool {
     this.previewLine.setAttribute("y1", this.startY);
     this.previewLine.setAttribute("x2", this.startX);
     this.previewLine.setAttribute("y2", this.startY);
-    this.previewLine.setAttribute("stroke", this.svgBoard.customizer.stroke.color);
+    this.previewLine.setAttribute(
+      "stroke",
+      this.svgBoard.customizer.stroke.color
+    );
 
     this.svgBoard.container.appendChild(this.previewLine);
   }
@@ -45,7 +48,7 @@ export default class DrawLineTool extends Tool {
     const currentX = event.clientX;
     const currentY = event.clientY;
 
-    if(currentX === this.startX && currentY === this.startY) {
+    if (currentX === this.startX && currentY === this.startY) {
       this.svgBoard.container.removeChild(this.previewLine);
       this.previewLine = null;
       return;
@@ -59,7 +62,8 @@ export default class DrawLineTool extends Tool {
     this.line.setAttribute("stroke", this.svgBoard.customizer.stroke.color);
 
     const createLine = new CreateElementEvent(this.svgBoard, this.line);
-    this.svgBoard.history.do(createLine);
+    this.svgBoard.dispatchEvent(createLine);
+    this.svgBoard.addSelectedElement(this.line);
 
     this.svgBoard.container.removeChild(this.previewLine);
     this.previewLine = null;
